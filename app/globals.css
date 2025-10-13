@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* App-level utilities */
+:root {
+	--background: 248 248 248;
+}
+
+html, body {
+	min-height: 100%;
+}
+
+/* Simple card */
+.card {
+	@apply rounded-lg border bg-white p-6 shadow-sm;
+}
+
+

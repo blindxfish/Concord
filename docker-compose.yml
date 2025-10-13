@@ -1,0 +1,17 @@
+name: concord
+
+services:
+  concord-web:
+    build: 
+      context: .
+      tags:
+        - "concord-web:${VERSION:-latest}"
+    container_name: concord-web-${VERSION:-latest}-${TIMESTAMP:-$(date +%s)}
+    image: concord-web:${VERSION:-latest}
+    ports:
+      - "3002:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
