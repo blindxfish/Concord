@@ -231,7 +231,7 @@ export default function ServicesList() {
 	}
 
 	return (
-		<div className="p-6">
+		<div className="p-6 max-w-[1400px] mx-auto">
 			<div className="mb-4 flex items-center justify-between">
 				<h2 className="text-lg font-medium">Services</h2>
 				<button
@@ -273,19 +273,19 @@ export default function ServicesList() {
 							</h3>
 							<div className="space-y-2">
 								{/* Header row */}
-								<div className="grid grid-cols-7 gap-4 items-center px-3 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-100 dark:bg-gray-700 rounded">
-									<div>Version</div>
-									<div>Status</div>
-									<div>Image ID</div>
-									<div>Size</div>
-									<div>Ports</div>
-									<div>Volumes</div>
-									<div>Actions</div>
+								<div className="grid grid-cols-8 gap-4 items-center px-3 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-100 dark:bg-gray-700 rounded">
+									<div className="col-span-2">Version</div>
+									<div className="col-span-1">Status</div>
+									<div className="col-span-1">Image ID</div>
+									<div className="col-span-1">Size</div>
+									<div className="col-span-1">Ports</div>
+									<div className="col-span-1">Volumes</div>
+									<div className="col-span-1">Actions</div>
 								</div>
 								{service.versions.map((version, index) => (
-									<div key={`${version.image.id}-${index}`} className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 rounded p-3">
-										<div className="flex-1 grid grid-cols-7 gap-4 items-center">
-                                            <div className="font-medium flex flex-col gap-1">
+									<div key={`${version.image.id}-${index}`} className="bg-gray-50 dark:bg-gray-700 rounded p-3">
+										<div className="grid grid-cols-8 gap-4 items-center">
+                                            <div className="col-span-2 font-medium flex flex-col gap-1">
                                                 <div className="flex items-center gap-2">
                                                     {/* Use concord.version if available, fallback to name parsing */}
                                                     {version.container?.concordVersion || 
@@ -311,29 +311,31 @@ export default function ServicesList() {
 													)}
 												</div>
 											</div>
-											<div className={`px-2 py-1 rounded text-xs font-medium ${
-												version.isRunning 
-													? 'bg-green-100 text-green-800' 
-													: 'bg-gray-100 text-gray-600'
-											}`}>
-												{version.isRunning ? 'running' : (index === 1 ? 'Prev stopped' : 'stopped')}
+											<div className="col-span-1">
+												<div className={`px-2 py-1 rounded text-xs font-medium w-fit ${
+													version.isRunning 
+														? 'bg-green-100 text-green-800' 
+														: 'bg-gray-100 text-gray-600'
+												}`}>
+													{version.isRunning ? 'running' : (index === 1 ? 'Prev stopped' : 'stopped')}
+												</div>
 											</div>
-                                            <div className="text-sm text-gray-600 dark:text-gray-400 font-mono">
+                                            <div className="col-span-1 text-sm text-gray-600 dark:text-gray-400 font-mono">
                                                 {version.image?.id || '—'}
                                             </div>
-                                            <div className="text-sm text-gray-600 dark:text-gray-400">
+                                            <div className="col-span-1 text-sm text-gray-600 dark:text-gray-400">
                                                 {version.image?.size || '—'}
                                             </div>
-											<div className="text-sm text-gray-600 dark:text-gray-400">
+											<div className="col-span-1 text-sm text-gray-600 dark:text-gray-400">
                                                 {version.container?.ports ? 
 													version.container.ports.split(',').slice(0, 2).join(', ') + 
 													(version.container.ports.split(',').length > 2 ? '...' : '') 
 													: 'no ports'}
 											</div>
-											<div className="text-sm text-gray-600 dark:text-gray-400">
+											<div className="col-span-1 text-sm text-gray-600 dark:text-gray-400">
                                                 {version.container?.volumes && version.container.volumes.length > 0 ? `${version.container.volumes.length} volumes` : 'no volumes'}
 											</div>
-											<div className="flex gap-2">
+											<div className="col-span-1 flex gap-2">
 												{version.isRunning ? (
 													<button
 														onClick={() => stopContainer(version.container!.id)}

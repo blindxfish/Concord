@@ -1,6 +1,7 @@
 "use client"
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import ThemeToggle from './ThemeToggle'
 
@@ -16,11 +17,25 @@ export default function Navigation() {
 
 	return (
 		<header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-			<div className="mx-auto max-w-7xl px-6 py-4">
+			<div className="mx-auto max-w-[1400px] px-6 py-4">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center space-x-8">
-						<Link href="/" className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-							Concord
+						<Link href="/" className="flex items-center space-x-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+							<Image
+								src="/graphics/simplelogodark.png"
+								alt="Concord Logo"
+								width={32}
+								height={32}
+								className="hidden dark:block"
+							/>
+							<Image
+								src="/graphics/simplelogolight.png"
+								alt="Concord Logo"
+								width={32}
+								height={32}
+								className="block dark:hidden"
+							/>
+							<span>Concord</span>
 						</Link>
 						<nav className="hidden md:flex space-x-6">
 							{navItems.map((item) => (

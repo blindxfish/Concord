@@ -2,75 +2,67 @@ export default function GuidePage() {
 	return (
 		<div className="mx-auto max-w-6xl p-6">
 			<header className="mb-8">
-				<h1 className="text-2xl font-semibold">Concord Naming & Versioning Guide</h1>
-				<p className="text-gray-600 dark:text-gray-400 mt-2">Complete guide for Docker naming conventions and examples that work with Concord</p>
+				<h1 className="text-2xl font-semibold">Concord Labels & Versioning Guide</h1>
+				<p className="text-gray-600 dark:text-gray-400 mt-2">Complete guide for using concord.labels to organize and manage your Docker containers</p>
 			</header>
 			
 			<div className="space-y-8">
-				{/* Core Naming Rules */}
+				{/* Concord Labels */}
 				<section className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-sm">
-					<h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Core Naming Rules</h2>
+					<h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Concord Labels</h2>
 					
 					<div className="space-y-6">
 						<div>
-							<h3 className="text-lg font-medium mb-3 text-gray-700 dark:text-gray-300">Service Name Format</h3>
-							<div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-								<code className="text-sm font-mono text-blue-600 dark:text-blue-400">
-									{`<project>-<component>`}
-								</code>
-							</div>
-							<p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-								Examples: <code className="bg-gray-100 dark:bg-gray-600 px-1 rounded">mydevplace-frontend</code>, 
-								<code className="bg-gray-100 dark:bg-gray-600 px-1 rounded">mydevplace-backend</code>, 
-								<code className="bg-gray-100 dark:bg-gray-600 px-1 rounded">concord-web</code>
+							<h3 className="text-lg font-medium mb-3 text-gray-700 dark:text-gray-300">Required Labels</h3>
+							<p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+								Concord uses Docker labels to organize containers. These labels are required for proper service grouping and versioning.
 							</p>
-						</div>
-
-						<div>
-							<h3 className="text-lg font-medium mb-3 text-gray-700 dark:text-gray-300">Version Tagging Strategy</h3>
-							<div className="space-y-3">
-								<div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border-l-4 border-green-500">
-									<h4 className="font-medium text-green-800 dark:text-green-200">Semantic Versioning (Required)</h4>
-									<code className="text-sm font-mono text-green-600 dark:text-green-400">
-										v1.0.0, v1.2.3, v2.0.0
+							<div className="space-y-4">
+								<div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-500">
+									<h4 className="font-medium text-blue-800 dark:text-blue-200">concord.service</h4>
+									<code className="text-sm font-mono text-blue-600 dark:text-blue-400">
+										concord.service=mydevplace-frontend
 									</code>
-									<p className="text-sm text-green-700 dark:text-green-300 mt-1">
-										Use semantic versioning for all releases. Concord requires this format.
+									<p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+										Identifies the service name. Used for grouping containers by service.
 									</p>
 								</div>
 								
-								<div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-500">
-									<h4 className="font-medium text-blue-800 dark:text-blue-200">Always Tag as Latest</h4>
-									<code className="text-sm font-mono text-blue-600 dark:text-blue-400">
-										service:v1.0.0, service:latest
+								<div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border-l-4 border-green-500">
+									<h4 className="font-medium text-green-800 dark:text-green-200">concord.version</h4>
+									<code className="text-sm font-mono text-green-600 dark:text-green-400">
+										concord.version=v1.2.3
 									</code>
-									<p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
-										Tag your image with both version and latest for easy reference.
+									<p className="text-sm text-green-700 dark:text-green-300 mt-1">
+										Semantic version of the service. Used for sorting and version management.
+									</p>
+								</div>
+								
+								<div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border-l-4 border-purple-500">
+									<h4 className="font-medium text-purple-800 dark:text-purple-200">concord.build</h4>
+									<code className="text-sm font-mono text-purple-600 dark:text-purple-400">
+										concord.build=1760386836
+									</code>
+									<p className="text-sm text-purple-700 dark:text-purple-300 mt-1">
+										Unique build timestamp. Used for build identification and sorting.
 									</p>
 								</div>
 							</div>
 						</div>
 
 						<div>
-							<h3 className="text-lg font-medium mb-3 text-gray-700 dark:text-gray-300">Container Naming Rules</h3>
-							<div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-								<ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-									<li>• Pattern: <code className="bg-gray-100 dark:bg-gray-600 px-1 rounded">&lt;service&gt;-vX.Y.Z-&lt;timestamp&gt;</code></li>
-									<li>• Example: <code className="bg-gray-100 dark:bg-gray-600 px-1 rounded">concord-web-v1.0.12-1760386836</code></li>
-									<li>• Concord extracts: service=concord-web, version=v1.0.12, build=1760386836</li>
-									<li>• Use hyphens (-), keep lowercase, no spaces/special characters</li>
-								</ul>
+							<h3 className="text-lg font-medium mb-3 text-gray-700 dark:text-gray-300">Why Use Concord Labels?</h3>
+							<div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border-l-4 border-yellow-500">
+								<h4 className="font-medium text-yellow-800 dark:text-yellow-200">No More Container Name Parsing</h4>
+								<p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
+									Concord now uses Docker labels instead of parsing container names. This is more reliable and flexible.
+								</p>
 							</div>
-						</div>
-
-						<div>
-							<h3 className="text-lg font-medium mb-3 text-gray-700 dark:text-gray-300">Required Labels</h3>
-							<div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-								<ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-									<li>• <code className="bg-gray-100 dark:bg-gray-600 px-1 rounded">concord.service</code> - Service name (e.g., concord-web)</li>
-									<li>• <code className="bg-gray-100 dark:bg-gray-600 px-1 rounded">concord.version</code> - Version tag (e.g., v1.0.12)</li>
-									<li>• <code className="bg-gray-100 dark:bg-gray-600 px-1 rounded">concord.build</code> - Build timestamp (e.g., 1760386836)</li>
-								</ul>
+							<div className="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-400">
+								<p>• <strong>Reliable:</strong> Labels are explicit and don't depend on naming conventions</p>
+								<p>• <strong>Flexible:</strong> Container names can be anything, labels handle organization</p>
+								<p>• <strong>Standard:</strong> Uses Docker's native labeling system</p>
+								<p>• <strong>Future-proof:</strong> Easy to extend with additional metadata</p>
 							</div>
 						</div>
 					</div>
@@ -78,7 +70,7 @@ export default function GuidePage() {
 
 				{/* Examples Section */}
 				<section className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-sm">
-					<h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Examples</h2>
+					<h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Implementation Examples</h2>
 					
 					<div className="space-y-6">
 						{/* Concord Scripts */}
@@ -87,11 +79,11 @@ export default function GuidePage() {
 							<div className="bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
 								<code># Bump version in package.json</code><br/>
 								<code>./bump-version.sh patch</code><br/>
-								<code># Build and start new container, keep older ones stopped</code><br/>
+								<code># Build and start new container with concord labels</code><br/>
 								<code>./build.sh</code>
 							</div>
 							<p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-								This automatically handles versioning, container naming, and labeling.
+								This automatically handles versioning, container creation, and concord labeling.
 							</p>
 						</div>
 
@@ -102,7 +94,7 @@ export default function GuidePage() {
 								<code># Build image with version tag</code><br/>
 								<code>docker build -t mydevplace-frontend:v1.2.3 .</code><br/>
 								<code>docker tag mydevplace-frontend:v1.2.3 mydevplace-frontend:latest</code><br/>
-								<code># Create container with Concord labels</code><br/>
+								<code># Create container with REQUIRED concord labels</code><br/>
 								<code>docker create --name mydevplace-frontend-v1.2.3-1760386836 \</code><br/>
 								<code>  --label concord.service=mydevplace-frontend \</code><br/>
 								<code>  --label concord.version=v1.2.3 \</code><br/>
@@ -111,6 +103,9 @@ export default function GuidePage() {
 								<code>  mydevplace-frontend:v1.2.3</code><br/>
 								<code>docker start mydevplace-frontend-v1.2.3-1760386836</code>
 							</div>
+							<p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+								<strong>Note:</strong> Container names can be anything - Concord uses the labels for organization!
+							</p>
 						</div>
 
 						{/* Docker Compose Example */}
