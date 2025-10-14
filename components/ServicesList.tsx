@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react'
+import ContainerDetailsModal from './ContainerDetailsModal'
 
 type Container = {
 	id: string
@@ -44,6 +45,8 @@ export default function ServicesList() {
 	const [error, setError] = useState<string | null>(null)
 	const [searchQuery, setSearchQuery] = useState('')
 	const [statusFilter, setStatusFilter] = useState<'all' | 'running' | 'stopped'>('all')
+	const [selectedContainerId, setSelectedContainerId] = useState<string | null>(null)
+	const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
 
 	async function loadData() {
 		setLoading(true)
@@ -182,6 +185,16 @@ export default function ServicesList() {
 		} catch (e: any) {
 			alert(`Failed to delete container: ${e.message}`)
 		}
+	}
+
+	function openDetailsModal(containerId: string) {
+		setSelectedContainerId(containerId)
+		setIsDetailsModalOpen(true)
+	}
+
+	function closeDetailsModal() {
+		setIsDetailsModalOpen(false)
+		setSelectedContainerId(null)
 	}
 
 	// Filter services based on search and status
@@ -336,6 +349,13 @@ export default function ServicesList() {
 														Start
 													</button>
 												)}
+												{/* Details button for all containers */}
+												<button
+													onClick={() => openDetailsModal(version.container!.id)}
+													className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+												>
+													Details
+												</button>
 												{/* Add delete button for stopped containers */}
 												{!version.isRunning && (
 													<button
@@ -354,6 +374,13 @@ export default function ServicesList() {
 					))}
 				</div>
 			)}
+			
+			{/* Container Details Modal */}
+			<ContainerDetailsModal
+				isOpen={isDetailsModalOpen}
+				onClose={closeDetailsModal}
+				containerId={selectedContainerId}
+			/>
 		</div>
 	)
 }
