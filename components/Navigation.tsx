@@ -12,7 +12,8 @@ export default function Navigation() {
 		{ href: '/', label: 'Home' },
 		{ href: '/images', label: 'Docker Images' },
 		{ href: '/services', label: 'Containers' },
-		{ href: '/guide', label: 'Naming Guide' },
+		{ href: '/guide', label: 'Documentation' },
+		{ href: '/about', label: 'About' },
 	]
 
 	return (

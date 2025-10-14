@@ -2,7 +2,7 @@
 
 <img width="940" alt="bnnerCon" src="https://github.com/user-attachments/assets/3126eb52-0949-41e8-a906-7df08fbdde6e" />
 
-A Docker container versioning management tool built with Next.js. Concord provides a container-first approach to managing Docker deployments with easy versioning, rollback capabilities, and comprehensive container lifecycle management.
+**Concord** is an open source Docker container versioning management tool built with Next.js. Our mission is to simplify Docker container versioning, rollbacks, and deployment tracking for developers and DevOps teams. Concord provides a container-first approach to managing Docker deployments with easy versioning, rollback capabilities, and comprehensive container lifecycle management.
 
 ![Concord](https://img.shields.io/badge/Next.js-14.2.5-black?style=flat-square&logo=next.js)
 ![Docker](https://img.shields.io/badge/Docker-Container%20Management-blue?style=flat-square&logo=docker)
@@ -174,6 +174,15 @@ pipeline {
 }
 ```
 
+## 🌐 Open Source
+
+Concord is **100% open source** and built by the community, for the community. We believe in transparency, collaboration, and making container management accessible to everyone.
+
+- **Repository**: [https://github.com/blindxfish/Concord](https://github.com/blindxfish/Concord)
+- **License**: MIT
+- **Contributions**: Welcome! Help us improve Concord
+- **Issues**: Report bugs and request features on GitHub
+
 ## 🎯 Key Benefits
 
 - **Zero-Downtime Deployments**: Switch versions instantly
@@ -182,6 +191,7 @@ pipeline {
 - **Resource Efficiency**: Only one version runs per service
 - **Developer Friendly**: Simple commands and clear interfaces
 - **Production Ready**: Built for real-world container management
+- **Open Source**: Free, transparent, and community-driven
 
 ## 🛡️ Security
 
