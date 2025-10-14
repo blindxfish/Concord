@@ -278,9 +278,9 @@ export default function ServicesList() {
 									<div className="col-span-1">Status</div>
 									<div className="col-span-2">Image ID</div>
 									<div className="col-span-1">Size</div>
-									<div className="col-span-3">Ports</div>
+									<div className="col-span-2">Ports</div>
 									<div className="col-span-1">Volumes</div>
-									<div className="col-span-1">Actions</div>
+									<div className="col-span-2">Actions</div>
 								</div>
 								{service.versions.map((version, index) => (
 									<div key={`${version.image.id}-${index}`} className="bg-gray-50 dark:bg-gray-700 rounded p-3">
@@ -326,7 +326,7 @@ export default function ServicesList() {
                                             <div className="col-span-1 text-sm text-gray-600 dark:text-gray-400">
                                                 {version.image?.size || '—'}
                                             </div>
-											<div className="col-span-3 text-sm text-gray-600 dark:text-gray-400 font-mono">
+											<div className="col-span-2 text-sm text-gray-600 dark:text-gray-400 font-mono">
                                                 {version.container?.ports ? 
 													version.container.ports
 													: 'no ports'}
@@ -334,7 +334,7 @@ export default function ServicesList() {
 											<div className="col-span-1 text-sm text-gray-600 dark:text-gray-400">
                                                 {version.container?.volumes && version.container.volumes.length > 0 ? `${version.container.volumes.length} volumes` : 'no volumes'}
 											</div>
-											<div className="col-span-1 flex gap-2">
+											<div className="col-span-2 flex gap-2 flex-wrap">
 												{version.isRunning ? (
 													<button
 														onClick={() => stopContainer(version.container!.id)}

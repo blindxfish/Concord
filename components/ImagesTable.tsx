@@ -97,6 +97,24 @@ export default function ImagesTableClient() {
 		}
 	}, [])
 
+	// Set default volume selection when both images and volumes are loaded
+	useEffect(() => {
+		if (images && volumes && volumes.length > 0) {
+			const defaultVolume = volumes[0].name
+			setSelectedVolumes(prev => {
+				const newSelections = { ...prev }
+				// Set default volume for all images that don't have a selection yet
+				images.forEach(img => {
+					const imageKey = `${img.repository}:${img.tag}`
+					if (!newSelections[imageKey]) {
+						newSelections[imageKey] = defaultVolume
+					}
+				})
+				return newSelections
+			})
+		}
+	}, [images, volumes])
+
 	// Group images by repository and check running status
 	const groupedImages = useMemo(() => {
 		if (!images) return []
