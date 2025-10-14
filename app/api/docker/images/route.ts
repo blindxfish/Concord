@@ -41,14 +41,20 @@ export async function GET() {
 			// If we can't get container info, just continue without running status
 		}
 
-		const images = raw.map((img) => ({
-			repository: img.Repository ?? '<none>',
-			tag: img.Tag ?? '<none>',
-			id: (img.ID as string)?.replace('sha256:', '').slice(0, 12),
-			size: img.Size ?? '',
-			createdSince: img.CreatedSince ?? '',
-			isRunning: runningImageIds.has(img.ID)
-		}))
+		const images = raw
+			.filter((img) => {
+				// Filter out intermediate layers (untagged images that are part of dependency chains)
+				// Only show images that have both a repository AND a tag (not both '<none>')
+				return !(img.Repository === '<none>' && img.Tag === '<none>')
+			})
+			.map((img) => ({
+				repository: img.Repository ?? '<none>',
+				tag: img.Tag ?? '<none>',
+				id: (img.ID as string)?.replace('sha256:', '').slice(0, 12),
+				size: img.Size ?? '',
+				createdSince: img.CreatedSince ?? '',
+				isRunning: runningImageIds.has(img.ID)
+			}))
 
 		return NextResponse.json(images)
 	} catch (error: any) {

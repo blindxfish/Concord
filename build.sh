@@ -25,8 +25,8 @@ IMAGE="concord-web:${VERSION}-${TIMESTAMP}"
 CONTAINER="concord-web-${VERSION}-${TIMESTAMP}"
 
 echo "Building image ${IMAGE}"
-# Use --no-cache to avoid intermediate layer buildup, or use --rm to remove intermediate containers
-docker build --rm -t "${IMAGE}" .
+# Use BuildKit with --rm to remove intermediate containers and prevent layer buildup
+DOCKER_BUILDKIT=1 docker build --rm -t "${IMAGE}" .
 
 # Also tag as latest for convenience
 docker tag "${IMAGE}" "concord-web:latest"
@@ -53,9 +53,10 @@ docker create \
 
 docker start "${CONTAINER}"
 
-# Clean up dangling images to prevent buildup
-echo "Cleaning up dangling images..."
+# Clean up dangling images and build cache to prevent buildup
+echo "Cleaning up dangling images and build cache..."
 docker image prune -f
+docker builder prune -f
 
 echo "Concord is now running at http://localhost:3002"
 echo "Version: ${VERSION}"
