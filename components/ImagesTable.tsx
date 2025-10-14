@@ -11,11 +11,22 @@ type DockerImage = {
 	isRunning?: boolean
 }
 
+type DockerVolume = {
+	name: string
+	driver: string
+	created: string
+	mountpoint: string
+	labels: Record<string, string>
+	size: string
+}
+
 export default function ImagesTableClient() {
 	const [images, setImages] = useState<DockerImage[] | null>(null)
+	const [volumes, setVolumes] = useState<DockerVolume[] | null>(null)
 	const [error, setError] = useState<string | null>(null)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [query, setQuery] = useState<string>("")
+	const [selectedVolumes, setSelectedVolumes] = useState<Record<string, string>>({})
 
 	async function loadImages() {
 		setIsLoading(true)
@@ -48,6 +59,20 @@ export default function ImagesTableClient() {
 		}
 	}
 
+	async function loadVolumes() {
+		try {
+			const res = await fetch('/api/docker/volumes', { cache: 'no-store' })
+			if (!res.ok) {
+				throw new Error('Failed to load volumes')
+			}
+			const data = (await res.json()) as DockerVolume[]
+			setVolumes(data)
+		} catch (e: any) {
+			console.error('Failed to load volumes:', e)
+			// Don't set error state for volumes, just log it
+		}
+	}
+
 	useEffect(() => {
 		let cancelled = false
 		;(async () => {
@@ -63,6 +88,10 @@ export default function ImagesTableClient() {
 				if (!cancelled) setIsLoading(false)
 			}
 		})()
+		
+		// Load volumes in parallel
+		loadVolumes()
+		
 		return () => {
 			cancelled = true
 		}
@@ -110,13 +139,18 @@ export default function ImagesTableClient() {
 
 	async function createContainerFromImage(image: DockerImage) {
 		try {
+			const imageKey = `${image.repository}:${image.tag}`
+			const selectedVolume = selectedVolumes[imageKey] || ''
+			
 			const res = await fetch('/api/docker/containers/create', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					image: `${image.repository}:${image.tag}`,
+					image: imageKey,
 					name: `${extractServiceName(image.repository)}-${Date.now()}`,
-					serviceName: extractServiceName(image.repository)
+					serviceName: extractServiceName(image.repository),
+					volume: selectedVolume || undefined,
+					port: 3000 + Math.floor(Math.random() * 1000) // Random port to avoid conflicts
 				})
 			})
 			if (!res.ok) throw new Error('Failed to create container')
@@ -240,6 +274,7 @@ export default function ImagesTableClient() {
 										<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Image ID</th>
 										<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Size</th>
 										<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Created</th>
+										<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Volume</th>
 										<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Actions</th>
 									</tr>
 								</thead>
@@ -265,6 +300,26 @@ export default function ImagesTableClient() {
 											<td className="whitespace-nowrap px-4 py-3 text-sm font-mono">{img.id}</td>
 											<td className="whitespace-nowrap px-4 py-3 text-sm">{img.size}</td>
 											<td className="whitespace-nowrap px-4 py-3 text-sm">{img.createdSince}</td>
+											<td className="whitespace-nowrap px-4 py-3 text-sm">
+												<select
+													value={selectedVolumes[`${img.repository}:${img.tag}`] || ''}
+													onChange={(e) => {
+														const imageKey = `${img.repository}:${img.tag}`
+														setSelectedVolumes(prev => ({
+															...prev,
+															[imageKey]: e.target.value
+														}))
+													}}
+													className="px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+												>
+													<option value="">No Volume</option>
+													{volumes?.map(volume => (
+														<option key={volume.name} value={volume.name}>
+															{volume.name}
+														</option>
+													))}
+												</select>
+											</td>
 											<td className="whitespace-nowrap px-4 py-3 text-sm">
 												<div className="flex items-center gap-2">
 													<button
