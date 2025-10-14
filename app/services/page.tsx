@@ -2,7 +2,7 @@ import ServicesList from '../../components/ServicesList'
 
 export default function ServicesPage() {
 	return (
-		<div className="mx-auto max-w-7xl p-6">
+		<div className="w-full p-6">
 			<header className="mb-6">
 				<h1 className="text-xl font-semibold">Container Management</h1>
 				<p className="text-gray-600 dark:text-gray-400">

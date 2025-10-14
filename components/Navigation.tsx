@@ -22,14 +22,14 @@ export default function Navigation() {
 					<div className="flex items-center space-x-8">
 						<Link href="/" className="flex items-center space-x-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
 							<Image
-								src="/graphics/simplelogodark.png"
+								src="/graphics/simplelogolight.png"
 								alt="Concord Logo"
 								width={32}
 								height={32}
 								className="hidden dark:block"
 							/>
 							<Image
-								src="/graphics/simplelogolight.png"
+								src="/graphics/simplelogodark.png"
 								alt="Concord Logo"
 								width={32}
 								height={32}
