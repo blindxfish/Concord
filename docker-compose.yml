@@ -15,3 +15,7 @@ services:
     environment:
       - NODE_ENV=production
     restart: unless-stopped
+    labels:
+      - "concord.service=concord-web"
+      - "concord.version=${VERSION:-latest}"
+      - "concord.build=${TIMESTAMP:-$(date +%s)}"

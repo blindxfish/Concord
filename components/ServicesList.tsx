@@ -14,6 +14,10 @@ type Container = {
 	labels: Record<string, string>
 	volumes: string[]
 	command: string
+	// Concord-specific labels for proper service organization
+	concordService?: string | null
+	concordVersion?: string | null
+	concordBuild?: string | null
 }
 
 type Image = {
@@ -55,9 +59,10 @@ export default function ServicesList() {
 			// Group containers and images by service name
 			const serviceMap = new Map<string, ServiceGroup>()
 			
-			// Process containers
+			// Process containers - use concord labels for proper service grouping
 			data.containers.forEach((container: Container) => {
-				const serviceName = extractServiceName(container.name)
+				// Use concord.service label if available, fallback to name parsing
+				const serviceName = container.concordService || extractServiceName(container.name)
 				if (!serviceMap.has(serviceName)) {
 					serviceMap.set(serviceName, {
 						serviceName,
@@ -95,20 +100,24 @@ export default function ServicesList() {
 			// Note: We only process containers now, not standalone images
 			// Images without containers are managed separately in the Images page
 			
-			// Sort versions by version (newest first)
+			// Sort versions by version (newest first) - use concord labels when available
 			serviceMap.forEach(service => {
             service.versions.sort((a, b) => {
-                // Primary: semantic version desc
-                const aVersion = a.container ? extractVersionFromContainer(a.container.name) : a.image.tag
-                const bVersion = b.container ? extractVersionFromContainer(b.container.name) : b.image.tag
+                // Primary: semantic version desc - use concord.version if available
+                const aVersion = a.container?.concordVersion || 
+                    (a.container ? extractVersionFromContainer(a.container.name) : a.image.tag)
+                const bVersion = b.container?.concordVersion || 
+                    (b.container ? extractVersionFromContainer(b.container.name) : b.image.tag)
                 const aVersionNum = extractVersion(aVersion)
                 const bVersionNum = extractVersion(bVersion)
                 const cmp = bVersionNum.localeCompare(aVersionNum, undefined, { numeric: true })
                 if (cmp !== 0) return cmp
 
-                // Secondary: build timestamp desc if same version
-                const aBuild = a.container ? (extractBuildFromContainer(a.container.name) ?? '0') : '0'
-                const bBuild = b.container ? (extractBuildFromContainer(b.container.name) ?? '0') : '0'
+                // Secondary: build timestamp desc if same version - use concord.build if available
+                const aBuild = a.container?.concordBuild || 
+                    (a.container ? (extractBuildFromContainer(a.container.name) ?? '0') : '0')
+                const bBuild = b.container?.concordBuild || 
+                    (b.container ? (extractBuildFromContainer(b.container.name) ?? '0') : '0')
                 return Number(bBuild) - Number(aBuild)
             })
 			})
@@ -265,10 +274,14 @@ export default function ServicesList() {
 										<div className="flex-1 grid grid-cols-7 gap-4 items-center">
                                             <div className="font-medium flex flex-col gap-1">
                                                 <div className="flex items-center gap-2">
-                                                    {version.container ? extractVersionFromContainer(version.container.name) : version.image.tag}
-                                                    {version.container && extractBuildFromContainer(version.container.name) && (
+                                                    {/* Use concord.version if available, fallback to name parsing */}
+                                                    {version.container?.concordVersion || 
+                                                        (version.container ? extractVersionFromContainer(version.container.name) : version.image.tag)}
+                                                    {/* Show build info from concord.build if available */}
+                                                    {(version.container?.concordBuild || 
+                                                        (version.container && extractBuildFromContainer(version.container.name))) && (
                                                         <span className="px-2 py-0.5 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-100 text-[10px] rounded">
-                                                            build {extractBuildFromContainer(version.container.name)}
+                                                            build {version.container?.concordBuild || extractBuildFromContainer(version.container.name)}
                                                         </span>
                                                     )}
                                                 </div>

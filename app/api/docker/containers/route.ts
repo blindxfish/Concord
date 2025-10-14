@@ -46,6 +46,8 @@ export async function GET() {
 					// Get the image ID by looking up the container's image tag
 					const imageId = imageMap.get(container.Image) || 'unknown'
 					
+					const labels = inspect.Config?.Labels || {}
+					
 					return {
 						id: container.ID,
 						name: container.Names?.replace('/', '') || 'unnamed',
@@ -55,9 +57,13 @@ export async function GET() {
 						state: container.State,
 						created: container.CreatedAt,
 						ports: container.Ports || '',
-						labels: inspect.Config?.Labels || {},
+						labels: labels,
 						volumes: inspect.Mounts?.map((mount: any) => mount.Destination).filter(Boolean) || [],
 						command: container.Command || '',
+						// Concord-specific labels for proper service organization
+						concordService: labels['concord.service'] || null,
+						concordVersion: labels['concord.version'] || null,
+						concordBuild: labels['concord.build'] || null,
 					}
 				} catch (error) {
 					return {
@@ -72,6 +78,10 @@ export async function GET() {
 						labels: {},
 						volumes: [],
 						command: container.Command || '',
+						// Concord-specific labels for proper service organization
+						concordService: null,
+						concordVersion: null,
+						concordBuild: null,
 					}
 				}
 			})
