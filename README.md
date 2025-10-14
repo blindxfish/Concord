@@ -1,7 +1,8 @@
 # 🌀Concord
 
-A Docker container versioning management tool built with Next.js. Concord provides a container-first approach to managing Docker deployments with easy versioning, rollback capabilities, and comprehensive container lifecycle management.
 <img width="940" alt="bnnerCon" src="https://github.com/user-attachments/assets/3126eb52-0949-41e8-a906-7df08fbdde6e" />
+
+A Docker container versioning management tool built with Next.js. Concord provides a container-first approach to managing Docker deployments with easy versioning, rollback capabilities, and comprehensive container lifecycle management.
 
 ![Concord](https://img.shields.io/badge/Next.js-14.2.5-black?style=flat-square&logo=next.js)
 ![Docker](https://img.shields.io/badge/Docker-Container%20Management-blue?style=flat-square&logo=docker)
