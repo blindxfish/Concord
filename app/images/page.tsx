@@ -2,7 +2,7 @@ import ImagesTable from '../../components/ImagesTable'
 
 export default function ImagesPage() {
 	return (
-		<div className="mx-auto max-w-7xl p-6">
+		<div className="w-full p-6">
 			<header className="mb-6">
 				<h1 className="text-xl font-semibold">Docker Images</h1>
 				<p className="text-gray-600 dark:text-gray-400">

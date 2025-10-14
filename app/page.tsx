@@ -1,6 +1,6 @@
 export default function HomePage() {
 	return (
-		<div className="mx-auto max-w-6xl p-6">
+		<div className="w-full p-6">
 			<header className="mb-8">
 				<h1 className="text-2xl font-semibold">Welcome to Concord</h1>
 				<p className="text-gray-600 dark:text-gray-400 mt-2">Docker container versioning and management tool</p>
