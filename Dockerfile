@@ -3,13 +3,15 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Install Docker CLI
-RUN apk add --no-cache docker-cli
+# Install Docker CLI and SQLite (native deps for better-sqlite3)
+RUN apk add --no-cache docker-cli python3 make g++ sqlite
 
 # Copy package files
 COPY package*.json ./
 
 # Install all dependencies (including devDependencies for build)
-RUN npm ci
+# Use npm install to avoid lockfile mismatch during image builds
+RUN npm install
 
 # Copy source code
 COPY . .

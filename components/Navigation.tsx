@@ -2,17 +2,23 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import ThemeToggle from './ThemeToggle'
 
 export default function Navigation() {
-	const pathname = usePathname()
+    const pathname = usePathname()
+    const router = useRouter()
+    async function logout() {
+        await fetch('/api/auth/logout', { method: 'POST' })
+        router.push('/login')
+    }
 	
 	const navItems = [
 		{ href: '/', label: 'Home' },
 		{ href: '/images', label: 'Docker Images' },
 		{ href: '/services', label: 'Containers' },
 		{ href: '/guide', label: 'Documentation' },
+		{ href: '/users', label: 'Users' },
 		{ href: '/about', label: 'About' },
 	]
 
@@ -54,7 +60,14 @@ export default function Navigation() {
 							))}
 						</nav>
 					</div>
-					<ThemeToggle />
+                <div className="flex items-center gap-3">
+                    <ThemeToggle />
+                    {pathname !== '/login' && (
+                        <button onClick={logout} className="px-3 py-1.5 rounded text-sm bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100">
+                            Logout
+                        </button>
+                    )}
+                </div>
 				</div>
 				
 				{/* Mobile navigation */}

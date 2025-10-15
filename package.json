@@ -1,7 +1,7 @@
 {
   "name": "concord",
   "private": true,
-  "version": "1.0.24",
+  "version": "1.0.37",
   "type": "module",
   "scripts": {
     "dev": "next dev",
@@ -12,12 +12,16 @@
   "dependencies": {
     "next": "^14.2.5",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^9.6.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/better-sqlite3": "^7.6.8",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.41",
     "tailwindcss": "^3.4.10",
