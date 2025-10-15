@@ -105,13 +105,10 @@ docker images
 3. **Delete Images**: Remove unused images to free up space
 4. **Cleanup**: Use "Cleanup Untagged" to remove dangling images
 
-### Naming Convention
+### Label Convention !
 
-Concord follows strict naming conventions:
+Concord follows strict label conventions for correct functioning:
 
-- **Service Names**: `<project>-<component>` (e.g., `mydevplace-frontend`)
-- **Container Names**: `<service>-vX.Y.Z-<timestamp>` (e.g., `concord-web-v1.0.13-1760387055`)
-- **Image Tags**: `<service>:vX.Y.Z` (e.g., `concord-web:v1.0.13`)
 - **Required Labels**: `concord.service`, `concord.version`, `concord.build`
 
 ## 🔧 API Endpoints
